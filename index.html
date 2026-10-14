@@ -1,0 +1,187 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A simple hospital management system demonstrating arrays in JavaScript.">
+    <title>CarePoint | Hospital Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-icon">+</div>
+            <div>
+                <h1>CarePoint</h1>
+                <p>Hospital Management System</p>
+            </div>
+        </div>
+        <span class="system-status"><span class="status-dot"></span> System Ready</span>
+    </header>
+
+    <main class="container">
+        <section class="welcome">
+            <div>
+                <p class="eyebrow">HOSPITAL ADMINISTRATION</p>
+                <h2>Patient Management</h2>
+                <p>Register patients and manage hospital records in one place.</p>
+            </div>
+            <button id="addPatientBtn" class="primary-btn">+ Register Patient</button>
+        </section>
+
+        <section class="stats-grid" aria-label="Patient statistics">
+            <article class="stat-card">
+                <span class="stat-label">Total Patients</span>
+                <strong id="totalPatients">0</strong>
+                <span class="stat-note">All registered records</span>
+            </article>
+            <article class="stat-card">
+                <span class="stat-label">Admitted</span>
+                <strong id="admittedPatients">0</strong>
+                <span class="stat-note">Currently admitted</span>
+            </article>
+            <article class="stat-card">
+                <span class="stat-label">Outpatients</span>
+                <strong id="outpatients">0</strong>
+                <span class="stat-note">Outpatient records</span>
+            </article>
+            <article class="stat-card">
+                <span class="stat-label">Discharged</span>
+                <strong id="dischargedPatients">0</strong>
+                <span class="stat-note">Completed admissions</span>
+            </article>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Patient Records</h2>
+                    <p>View, search, update, or remove patient records.</p>
+                </div>
+                <span id="recordCount" class="record-count">0 records</span>
+            </div>
+
+            <div class="toolbar">
+                <label class="search-box">
+                    <span aria-hidden="true">⌕</span>
+                    <input type="search" id="searchInput"
+                        placeholder="Search by name, ID, or condition..."
+                        aria-label="Search patients">
+                </label>
+
+                <label class="filter-label" for="statusFilter">Status:</label>
+                <select id="statusFilter">
+                    <option value="All">All patients</option>
+                    <option value="Admitted">Admitted</option>
+                    <option value="Outpatient">Outpatient</option>
+                    <option value="Discharged">Discharged</option>
+                </select>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Age</th>
+                            <th>Condition</th>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patientTableBody"></tbody>
+                </table>
+            </div>
+            <p id="emptyMessage" class="empty-message" hidden>
+                No patients found. Register a patient or change your search.
+            </p>
+        </section>
+
+        <section class="array-note">
+            <div class="array-icon">[ ]</div>
+            <div>
+                <h3>How arrays are used</h3>
+                <p>
+                    Patient records are stored in a JavaScript array. The system
+                    uses array methods such as <code>push()</code>,
+                    <code>find()</code>, <code>findIndex()</code>, and
+                    <code>filter()</code> to manage records.
+                </p>
+            </div>
+        </section>
+
+        <footer>
+            <p>CarePoint Hospital Management System · Educational demonstration</p>
+            <p class="privacy-note">Demo only: do not enter real or confidential patient information.</p>
+        </footer>
+    </main>
+
+    <dialog id="patientDialog">
+        <form id="patientForm">
+            <div class="dialog-heading">
+                <div>
+                    <p class="eyebrow">PATIENT RECORD</p>
+                    <h2 id="dialogTitle">Register Patient</h2>
+                </div>
+                <button type="button" id="closeDialogBtn"
+                    class="close-btn" aria-label="Close form">×</button>
+            </div>
+
+            <input type="hidden" id="patientId">
+
+            <label for="patientName">Full name</label>
+            <input id="patientName" type="text" maxlength="80" required>
+
+            <div class="form-row">
+                <div>
+                    <label for="patientAge">Age</label>
+                    <input id="patientAge" type="number" min="0" max="120" required>
+                </div>
+                <div>
+                    <label for="patientGender">Gender</label>
+                    <select id="patientGender" required>
+                        <option value="">Select</option>
+                        <option>Female</option>
+                        <option>Male</option>
+                        <option>Other</option>
+                        <option>Prefer not to say</option>
+                    </select>
+                </div>
+            </div>
+
+            <label for="patientCondition">Condition / reason for visit</label>
+            <input id="patientCondition" type="text" maxlength="100" required>
+
+            <label for="patientDepartment">Department</label>
+            <select id="patientDepartment" required>
+                <option value="">Select department</option>
+                <option>General Medicine</option>
+                <option>Paediatrics</option>
+                <option>Emergency</option>
+                <option>Maternity</option>
+                <option>Surgery</option>
+                <option>Dental</option>
+                <option>Outpatient Department</option>
+            </select>
+
+            <label for="patientStatus">Patient status</label>
+            <select id="patientStatus" required>
+                <option value="Outpatient">Outpatient</option>
+                <option value="Admitted">Admitted</option>
+                <option value="Discharged">Discharged</option>
+            </select>
+
+            <div class="form-actions">
+                <button type="button" id="cancelBtn" class="secondary-btn">Cancel</button>
+                <button type="submit" class="primary-btn">Save Patient</button>
+            </div>
+        </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
+```
